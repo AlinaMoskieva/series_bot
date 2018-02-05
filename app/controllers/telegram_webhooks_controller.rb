@@ -13,4 +13,9 @@ class TelegramWebhooksController < ApplicationController
     result = Serials::MyList.call(data: payload, user: current_user).result
     respond_with :message, text: result, parse_mode: "markdown"
   end
+
+  def remove_serial(cmd = nil, *)
+    result = Serials::Remove.call(data: payload, user: current_user).result
+    respond_with :message, text: result, parse_mode: "markdown"
+  end
 end
