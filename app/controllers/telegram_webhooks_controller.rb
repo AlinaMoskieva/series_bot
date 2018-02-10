@@ -23,4 +23,9 @@ class TelegramWebhooksController < ApplicationController
     result = Movies::New.call.list
     respond_with :message, text: result, parse_mode: "markdown"
   end
+
+  def most_popular(cmd = nil, *)
+    result = Movies::Popular.call.list
+    respond_with :message, text: result, parse_mode: "markdown"
+  end
 end
