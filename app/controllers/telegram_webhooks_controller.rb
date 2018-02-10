@@ -18,4 +18,9 @@ class TelegramWebhooksController < ApplicationController
     result = Serials::Remove.call(data: payload, user: current_user).result
     respond_with :message, text: result, parse_mode: "markdown"
   end
+
+  def movies(cmd = nil, *)
+    result = Movies::New.call.list
+    respond_with :message, text: result, parse_mode: "markdown"
+  end
 end
