@@ -25,7 +25,12 @@ class TelegramWebhooksController < ApplicationController
   end
 
   def most_popular(cmd = nil, *)
-    result = Movies::Popular.call.list
-    respond_with :message, text: result, parse_mode: "markdown"
+    result = Movies::Popular.call
+    respond_with :message, text: result.list, parse_mode: "markdown", reply_markup: { inline_keyboard: result.buttons }
+  end
+
+
+  def callback_query(data)
+    respond_with :message, text: data.to_s, parse_mode: "markdown"
   end
 end
