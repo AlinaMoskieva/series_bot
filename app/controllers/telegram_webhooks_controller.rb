@@ -30,10 +30,8 @@ class TelegramWebhooksController < ApplicationController
   end
 
   def callback_query(data)
-    sym_data = Menu::METHODS_TO_CALL[data.to_sym]
-
-    return send(sym_data) if sym_data.in? Menu::METHODS_TO_CALL.keys
-    respond_with :message, text: data.to_s, parse_mode: "markdown"
+    return send(Menu::METHODS_TO_CALL[data.to_sym]) if data.to_sym.in? Menu::METHODS_TO_CALL.keys
+    respond_with :message, text: Menu::ERROR_MESSAGE, parse_mode: "markdown"
   end
 
   def menu(cmd = nil, *)

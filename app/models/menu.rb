@@ -1,6 +1,9 @@
 class Menu
   MENU_TITLE = "*Основные возможности бота:*\n\n➰ Добавление сериал в список тех, которые вы смотрите
   `/add_serial название сериала`.\n\n➰ Удаление сериала из списка, используя команду\n `/remove_serial название сериала`".freeze
+
+  ERROR_MESSAGE  = "Произошла ошибка. Напишите об этом @AlinaMoskieva".freeze
+
   MENU_ITEMS = [
     [{ text: "Мои сериалы", callback_data: "my" }],
     [{ text: "Фильмы в кино", callback_data: "movies" }],
