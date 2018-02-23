@@ -3,24 +3,30 @@ module Movies
     include Interactor
 
     URL = "https://www.kinopoisk.ru/afisha/new/city/430/".freeze
+    PS = "*Подробнее:*".freeze
 
     def call
-      context.list = movies_list
+      context.list, context.buttons = movies_list
     end
 
     private
 
     def movies_list
-      list = "Сегодня в кино: \n\n"
+      list, buttons = ["Сегодня в кино: \n\n", []]
       document.css(".filmsListNew").css(".item").each do |item|
-        list += russian_name(item) + original_name_with_time(item) + info(item) + raiting(item) + genre(item) + "\n\n"
+        list += bold_russian_name(item) + original_name_with_time(item) + info(item) + raiting(item) + genre(item) + "\n\n"
+        buttons << [{ text: russian_name(item), callback_data: link(item) }]
       end
-      list
+      [list << PS, buttons]
     end
 
     def russian_name(item)
       elem = item.css(".name").css("a")
-      "*#{decorate(elem)}*"
+      decorate(elem)
+    end
+
+    def bold_russian_name(item)
+      "*#{russian_name(item)}*"
     end
 
     def original_name_with_time(item)
@@ -47,6 +53,11 @@ module Movies
 
     def decorate(item)
       item.text.squish << "\n"
+    end
+
+    def link(item)
+      link = item.css(".name").css("a").first["href"]
+      "F#{link[6..-2]}"
     end
 
     def document

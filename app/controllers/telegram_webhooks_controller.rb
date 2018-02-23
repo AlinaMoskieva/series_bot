@@ -20,8 +20,8 @@ class TelegramWebhooksController < ApplicationController
   end
 
   def movies(cmd = nil, *)
-    result = Movies::New.call.list
-    respond_with_message(result)
+    result = Movies::New.call
+    respond_with_message_and_buttons(result.list, result.buttons)
   end
 
   def most_popular(cmd = nil, *)
@@ -29,8 +29,14 @@ class TelegramWebhooksController < ApplicationController
     respond_with_message_and_buttons(result.list, result.buttons)
   end
 
+  def film_info(data)
+    result = Movies::Info.call(data).result
+    respond_with_message(result)
+  end
+
   def callback_query(data)
     return send(Menu::METHODS_TO_CALL[data.to_sym]) if data.to_sym.in? Menu::METHODS_TO_CALL.keys
+    return film_info(film: data[1..-1]) if data.start_with?("F")
     respond_with :message, text: Menu::ERROR_MESSAGE, parse_mode: "markdown"
   end
 
